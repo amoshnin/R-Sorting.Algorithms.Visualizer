@@ -63,6 +63,7 @@ const Navbar: React.FC<PropsType> = () => {
 
   useEffect(() => {
     generateArray(87)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   const speed =
