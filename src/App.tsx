@@ -2,8 +2,9 @@
 import React from 'react'
 
 // COMPONENTS IMPORTS //
-import Navbar from 'Shared/Layout/Navbar'
-import Body from 'Screens/Body'
+import Navbar from 'Components/Navbar'
+import Body from 'Components/Body'
+import Footer from 'Components/Footer'
 
 // EXTRA IMPORTS //
 import { memoComparison } from 'Shared/Helpers/Functions'
@@ -17,6 +18,7 @@ const App: React.FC<PropsType> = () => {
     <>
       <Navbar />
       <Body />
+      <Footer />
     </>
   )
 }

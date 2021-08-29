@@ -9,6 +9,7 @@ export const baseSlice = createSlice({
   name: 'base',
   initialState: {
     // General state
+    time: 0,
     algorithm: '' as AlgorithmType,
     isRunning: false,
     array: [] as Array<number>,
@@ -24,6 +25,16 @@ export const baseSlice = createSlice({
   },
   reducers: {
     // General reducers
+    incrementTimeByOne: (state, action: { payload?: null }) => {
+      if (state.isRunning === true) {
+        state.time += 1
+      }
+    },
+
+    resetTime: (state, action: { payload?: null }) => {
+      state.time = 0
+    },
+
     setAlgorithm: (state, action: { payload: AlgorithmType }) => {
       state.algorithm = action.payload
     },
@@ -51,7 +62,7 @@ export const baseSlice = createSlice({
         state.swappersArray = []
       }
 
-      console.log(action.payload)
+      // console.log(action.payload)
       var osc = context.createOscillator() // instantiate an oscillator
       osc.type = 'square' // this is the default - also square, sawtooth, triangle
       const value = limitNumberWithinRange(

@@ -29,6 +29,19 @@ const Navbar: React.FC<PropsType> = () => {
   )
   const dispatch = useAppDispatch()
 
+  useEffect(() => {
+    var interval: any
+    if (isRunning === true) {
+      interval = setInterval(() => {
+        dispatch(actions.incrementTimeByOne())
+      }, 1000)
+    } else {
+      dispatch(actions.resetTime())
+    }
+
+    return () => clearInterval(interval)
+  }, [isRunning, dispatch])
+
   const generateArray = (length: number) => {
     let array = []
     while (array.length < length) {
