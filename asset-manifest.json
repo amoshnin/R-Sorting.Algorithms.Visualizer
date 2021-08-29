@@ -1,17 +1,17 @@
 {
   "files": {
-    "main.js": "/R-SortingAlgorithmsVisualizer/static/js/main.0665b864.chunk.js",
-    "main.js.map": "/R-SortingAlgorithmsVisualizer/static/js/main.0665b864.chunk.js.map",
-    "runtime-main.js": "/R-SortingAlgorithmsVisualizer/static/js/runtime-main.41971c15.js",
-    "runtime-main.js.map": "/R-SortingAlgorithmsVisualizer/static/js/runtime-main.41971c15.js.map",
-    "static/js/2.49907174.chunk.js": "/R-SortingAlgorithmsVisualizer/static/js/2.49907174.chunk.js",
-    "static/js/2.49907174.chunk.js.map": "/R-SortingAlgorithmsVisualizer/static/js/2.49907174.chunk.js.map",
+    "main.js": "/R-SortingAlgorithmsVisualizer/static/js/main.96f13470.chunk.js",
+    "main.js.map": "/R-SortingAlgorithmsVisualizer/static/js/main.96f13470.chunk.js.map",
+    "runtime-main.js": "/R-SortingAlgorithmsVisualizer/static/js/runtime-main.93d2883d.js",
+    "runtime-main.js.map": "/R-SortingAlgorithmsVisualizer/static/js/runtime-main.93d2883d.js.map",
+    "static/js/2.ad0af51f.chunk.js": "/R-SortingAlgorithmsVisualizer/static/js/2.ad0af51f.chunk.js",
+    "static/js/2.ad0af51f.chunk.js.map": "/R-SortingAlgorithmsVisualizer/static/js/2.ad0af51f.chunk.js.map",
     "index.html": "/R-SortingAlgorithmsVisualizer/index.html",
-    "static/js/2.49907174.chunk.js.LICENSE.txt": "/R-SortingAlgorithmsVisualizer/static/js/2.49907174.chunk.js.LICENSE.txt"
+    "static/js/2.ad0af51f.chunk.js.LICENSE.txt": "/R-SortingAlgorithmsVisualizer/static/js/2.ad0af51f.chunk.js.LICENSE.txt"
   },
   "entrypoints": [
-    "static/js/runtime-main.41971c15.js",
-    "static/js/2.49907174.chunk.js",
-    "static/js/main.0665b864.chunk.js"
+    "static/js/runtime-main.93d2883d.js",
+    "static/js/2.ad0af51f.chunk.js",
+    "static/js/main.96f13470.chunk.js"
   ]
 }
