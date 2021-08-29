@@ -1,5 +1,9 @@
 import { createSlice } from '@reduxjs/toolkit'
 import { AlgorithmType } from 'Redux/types'
+import { limitNumberWithinRange } from 'Shared/Helpers/Functions'
+
+// @ts-ignore
+var context = new (window.AudioContext || window.webkitAudioContext)()
 
 export const baseSlice = createSlice({
   name: 'base',
@@ -46,6 +50,24 @@ export const baseSlice = createSlice({
       } else {
         state.swappersArray = []
       }
+
+      console.log(action.payload)
+
+      var osc = context.createOscillator() // instantiate an oscillator
+      osc.type = 'square' // this is the default - also square, sawtooth, triangle
+      const value = limitNumberWithinRange(
+        action.payload[0] * action.payload[0] || 400,
+        -22050,
+        22050,
+      )
+      osc.frequency.value = value
+      osc.frequency.linearRampToValueAtTime(
+        value * Math.pow(2, 1 / 12),
+        context.currentTime + 1,
+      )
+      osc.connect(context.destination) // connect it to the destination
+      osc.start() // start the oscillator
+      osc.stop(context.currentTime + 0.02) // stop 2 seconds after the current time
     },
 
     // Individual algorithms reducers
