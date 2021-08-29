@@ -1,12 +1,16 @@
-import { setArray } from '../reducers/array'
-import { setCurrentMergeX } from '../reducers/mergeSort'
-import { setCurrentSwappers } from '../reducers/swappers'
-import { setCurrentSorted } from '../reducers/sorted'
-import { setRunning } from '../reducers/running'
+import { actions } from 'Redux/slices/base'
+import { AppDispatch } from 'Redux/store'
 
-function mergeSort(stateArray, dispatch, speed: number) {
+import { TwoDArrayOfNumbers } from './index'
+
+type MergeSortObjType = { array: Array<number> }
+function mergeSort(
+  stateArray: Array<number>,
+  dispatch: AppDispatch,
+  speed: number,
+) {
   let array = stateArray.slice(0),
-    toDispatch = []
+    toDispatch: TwoDArrayOfNumbers = []
   let finalArray = mergeSortHelper(
     array.map((num, idx) => [num, idx]),
     toDispatch,
@@ -18,12 +22,12 @@ function mergeSort(stateArray, dispatch, speed: number) {
 }
 
 function mergeSortHelper(
-  array: Array<number>,
-  toDispatch,
+  array: TwoDArrayOfNumbers,
+  toDispatch: TwoDArrayOfNumbers,
   start: number,
   end: number,
-  obj,
-) {
+  obj: MergeSortObjType,
+): TwoDArrayOfNumbers {
   if (array.length === 1) {
     return array
   }
@@ -31,8 +35,20 @@ function mergeSortHelper(
     first = array.slice(0, half),
     second = array.slice(half),
     indexHalf = Math.floor((end + 1 + start) / 2),
-    actualFirst = mergeSortHelper(first, toDispatch, start, indexHalf - 1, obj),
-    actualSecond = mergeSortHelper(second, toDispatch, indexHalf, end, obj),
+    actualFirst: TwoDArrayOfNumbers = mergeSortHelper(
+      first,
+      toDispatch,
+      start,
+      indexHalf - 1,
+      obj,
+    ),
+    actualSecond: TwoDArrayOfNumbers = mergeSortHelper(
+      second,
+      toDispatch,
+      indexHalf,
+      end,
+      obj,
+    ),
     isFinalMerge = false
   if (actualFirst.length + actualSecond.length === obj.array.length)
     isFinalMerge = true
@@ -48,14 +64,14 @@ function mergeSortHelper(
 }
 
 function actualSort(
-  first: number,
-  second: number,
-  toDispatch,
-  obj,
+  first: Array<Array<number>>,
+  second: Array<Array<number>>,
+  toDispatch: Array<Array<number | boolean>>,
+  obj: MergeSortObjType,
   start: number,
   end: number,
   isFinalMerge: boolean,
-) {
+): TwoDArrayOfNumbers {
   let sortedArray = []
   let indexToPush = start
   while (first.length && second.length) {
@@ -70,14 +86,14 @@ function actualSort(
       first.forEach((subArr) => subArr[1]++)
       if (start === 0) {
         obj.array = sortedArray
-          .map((subArr) => subArr[0])
+          .map((subArr: any) => subArr[0])
           .concat(first.map((subArr) => subArr[0]))
           .concat(second.map((subArr) => subArr[0]))
           .concat(obj.array.slice(end + 1))
       } else {
         obj.array = obj.array
           .slice(0, start)
-          .concat(sortedArray.map((subArr) => subArr[0]))
+          .concat(sortedArray.map((subArr: any) => subArr[0]))
           .concat(first.map((subArr) => subArr[0]))
           .concat(second.map((subArr) => subArr[0]))
           .concat(obj.array.slice(end + 1))
@@ -87,51 +103,58 @@ function actualSort(
     }
     if (isFinalMerge) toDispatch.push([true, indexToPush - 1])
   }
-  return sortedArray.concat(first).concat(second)
+  return sortedArray.concat(first).concat(second) as TwoDArrayOfNumbers
 }
 
-function handleDispatch(toDispatch, dispatch, array, speed) {
+function handleDispatch(
+  toDispatch: TwoDArrayOfNumbers,
+  dispatch: AppDispatch,
+  array: TwoDArrayOfNumbers,
+  speed: number,
+) {
   if (!toDispatch.length) {
-    dispatch(setCurrentMergeX(array.map((num, index) => index)))
+    dispatch(actions.setMergeSortArray(array.map((num, index) => index)))
     setTimeout(() => {
-      dispatch(setCurrentMergeX([]))
-      dispatch(setCurrentSorted(array.map((num, index) => index)))
-      dispatch(setRunning(false))
+      dispatch(actions.setMergeSortArray([]))
+      dispatch(actions.setSortedArray(array.map((num, index) => index)))
+      dispatch(actions.setRunning(false))
     }, 900)
     return
   }
   let dispatchFunction =
     toDispatch[0].length > 3
-      ? setArray
+      ? actions.setArray
       : (toDispatch[0].length === 3 && typeof toDispatch[0][2] === 'boolean') ||
         toDispatch[0].length === 0
-      ? setCurrentSwappers
+      ? actions.setSwappersArray
       : toDispatch[0].length === 2 && typeof toDispatch[0][0] === 'boolean'
-      ? setCurrentSorted
-      : setCurrentMergeX
-  if (dispatchFunction === setArray) {
+      ? actions.setSortedArray
+      : actions.setMergeSortArray
+  if (dispatchFunction === actions.setArray) {
     let currentToDispatch = toDispatch.shift()
-    dispatch(
-      dispatchFunction(
-        currentToDispatch.slice(0, currentToDispatch.length - 2),
-      ),
-    )
-    dispatch(setCurrentSwappers([]))
-    dispatch(setCurrentMergeX([]))
-    dispatch(
-      setCurrentSwappers([
-        currentToDispatch[currentToDispatch.length - 2],
-        currentToDispatch[currentToDispatch.length - 1],
-      ]),
-    )
-    dispatch(
-      setCurrentMergeX([
-        currentToDispatch[currentToDispatch.length - 2],
-        currentToDispatch[currentToDispatch.length - 1],
-      ]),
-    )
+    if (currentToDispatch) {
+      dispatch(
+        dispatchFunction(
+          currentToDispatch.slice(0, currentToDispatch.length - 2),
+        ),
+      )
+      dispatch(actions.setSwappersArray([]))
+      dispatch(actions.setMergeSortArray([]))
+      dispatch(
+        actions.setSwappersArray([
+          currentToDispatch[currentToDispatch.length - 2],
+          currentToDispatch[currentToDispatch.length - 1],
+        ]),
+      )
+      dispatch(
+        actions.setMergeSortArray([
+          currentToDispatch[currentToDispatch.length - 2],
+          currentToDispatch[currentToDispatch.length - 1],
+        ]),
+      )
+    }
   } else {
-    dispatch(dispatchFunction(toDispatch.shift()))
+    dispatch(dispatchFunction(toDispatch.shift() as any))
   }
   setTimeout(() => {
     handleDispatch(toDispatch, dispatch, array, speed)

@@ -1,34 +1,89 @@
 // PLUGINS IMPORTS //
-import React from 'react'
+import React, { useEffect } from 'react'
 import styled from 'styled-components'
+import { useSelector } from 'react-redux'
 
 // COMPONENTS IMPORTS //
 import { memoComparison } from 'Shared/Helpers/Functions'
 
 // EXTRA IMPORTS //
+import {
+  bubbleSort,
+  quickSort,
+  heapSort,
+  mergeSort,
+} from 'Shared/Helpers/Algorithms'
+
+// REDUX IMPORTS //
+import { actions } from 'Redux/slices/base'
+import { RootState, useAppDispatch } from 'Redux/store'
+import { AlgorithmType } from 'Redux/types'
 
 /////////////////////////////////////////////////////////////////////////////
 
 type PropsType = {}
 
 const Navbar: React.FC<PropsType> = () => {
-  const isRunning = false
-  var algorithm = ''
+  const { array, isRunning, algorithm } = useSelector(
+    (state: RootState) => state.base,
+  )
+  const dispatch = useAppDispatch()
 
-  const array: [number] = [2]
+  const generateArray = (length: number) => {
+    let array = []
+    while (array.length < length) {
+      array.push(Math.floor(Math.random() * 200) + 10)
+    }
+    dispatch(actions.setArray(array))
+    dispatch(actions.setSortedArray([]))
+  }
 
-  const sort = (algorithm: string, array: Array<number>, speed: number) => {}
+  const sort = (
+    algorithm: AlgorithmType,
+    array: Array<number>,
+    speed: number,
+  ) => {
+    let doSort =
+      algorithm === 'Bubble Sort'
+        ? bubbleSort
+        : algorithm === 'Quick Sort'
+        ? quickSort
+        : algorithm === 'Heap Sort'
+        ? heapSort
+        : algorithm === 'Merge Sort'
+        ? mergeSort
+        : null
+
+    dispatch(actions.setSortedArray([]))
+    dispatch(actions.setRunning(true))
+    if (doSort !== null) {
+      doSort(array, dispatch, speed)
+    }
+  }
+
+  useEffect(() => {
+    generateArray(87)
+  }, [])
 
   const speed =
     570 - Math.pow(array.length, 2) > 0 ? 570 - Math.pow(array.length, 2) : 0
   const color = isRunning ? 'rgba(214, 29, 29, 0.8)' : 'white'
   const cursor = isRunning ? 'auto' : 'pointer'
 
-  const generateArray = (i: number) => {}
+  const handleChangeScroller = (event: React.ChangeEvent<HTMLInputElement>) => {
+    generateArray(Math.floor((parseInt(event.target.value) + 3) * 1.65))
+  }
 
-  const handleChangeScroller = () => {}
-  const handleAlgorithmSelect = (algorithm: string) => {}
-  const algorithms = ['Merge Sort', 'Quick Sort', 'Heap Sort', 'Bubble Sort']
+  const handleAlgorithmSelect = (algorithm: AlgorithmType) => {
+    dispatch(actions.setAlgorithm(algorithm))
+  }
+
+  const algorithms: Array<AlgorithmType> = [
+    'Merge Sort',
+    'Quick Sort',
+    'Heap Sort',
+    'Bubble Sort',
+  ]
   return (
     <WrapperView>
       <div
@@ -76,18 +131,17 @@ const Navbar: React.FC<PropsType> = () => {
 
 const AlgorithmButton = (props: {
   selectedAlgorithm: string
-  algorithm: string
-  handleSelect: (newAlgorithm: string) => void
+  algorithm: AlgorithmType
+  handleSelect: (newAlgorithm: AlgorithmType) => void
   disabled: boolean
 }) => {
-  const trimmed = props.algorithm.split(' ').join('')
-  const isSelected = props.selectedAlgorithm === trimmed
+  const isSelected = props.selectedAlgorithm === props.algorithm
 
   const onClick = () => {
     if (props.disabled) {
       return () => {}
     } else {
-      return props.handleSelect(trimmed)
+      return props.handleSelect(props.algorithm)
     }
   }
 

@@ -1,12 +1,17 @@
-import { setArray } from '../reducers/array'
-import { setCurrentQuickTwo, setPivot } from '../reducers/quickSort'
-import { setCurrentSwappers } from '../reducers/swappers'
-import { setCurrentSorted } from '../reducers/sorted'
-import { setRunning } from '../reducers/running'
+import { actions } from 'Redux/slices/base'
+import { AppDispatch } from 'Redux/store'
 
-function quickSort(stateArray, dispatch, speed) {
+type LocalCustom2DArrayOfNumbersOrBooleans = Array<
+  Array<boolean | number> | number
+>
+
+function quickSort(
+  stateArray: Array<number>,
+  dispatch: AppDispatch,
+  speed: number,
+) {
   let array = stateArray.slice(0),
-    toDispatch = []
+    toDispatch: LocalCustom2DArrayOfNumbersOrBooleans = []
   quickSortHelper(array, 0, array.length - 1, toDispatch)
   handleDispatch(toDispatch, dispatch, array, speed)
   return array
@@ -16,7 +21,7 @@ function quickSortHelper(
   array: Array<number>,
   start: number,
   end: number,
-  toDispatch,
+  toDispatch: LocalCustom2DArrayOfNumbersOrBooleans,
 ) {
   if (start >= end) {
     toDispatch.push([true, start])
@@ -59,32 +64,32 @@ function quickSortHelper(
 }
 
 function handleDispatch(
-  toDispatch,
-  dispatch,
+  toDispatch: LocalCustom2DArrayOfNumbersOrBooleans,
+  dispatch: AppDispatch,
   array: Array<number>,
   speed: number,
 ) {
   if (!toDispatch.length) {
-    dispatch(setPivot(null))
-    dispatch(setCurrentQuickTwo(array.map((num, index) => index)))
+    dispatch(actions.setQuickSortPivot(null))
+    dispatch(actions.setQuickSortArray(array.map((num, index) => index)))
     setTimeout(() => {
-      dispatch(setCurrentQuickTwo([]))
-      dispatch(setRunning(false))
+      dispatch(actions.setQuickSortArray([]))
+      dispatch(actions.setRunning(false))
     }, 900)
     return
   }
   let dispatchFunction = !(toDispatch[0] instanceof Array)
-    ? setPivot
+    ? actions.setQuickSortPivot
     : toDispatch[0].length > 3
-    ? setArray
+    ? actions.setArray
     : toDispatch[0].length !== 2
-    ? setCurrentSwappers
+    ? actions.setSwappersArray
     : toDispatch[0].length === 2 && typeof toDispatch[0][0] === 'boolean'
-    ? setCurrentSorted
-    : setCurrentQuickTwo
-  dispatch(dispatchFunction(toDispatch.shift()))
-  if (dispatchFunction === setPivot)
-    dispatch(setCurrentQuickTwo(toDispatch.shift()))
+    ? actions.setSortedArray
+    : actions.setQuickSortArray
+  dispatch(dispatchFunction(toDispatch.shift() as any))
+  if (dispatchFunction === actions.setQuickSortPivot)
+    dispatch(actions.setQuickSortArray(toDispatch.shift() as any))
   setTimeout(() => {
     handleDispatch(toDispatch, dispatch, array, speed)
   }, speed)

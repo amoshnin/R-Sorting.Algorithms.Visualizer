@@ -1,6 +1,6 @@
 # Sorting Visualizer
 
-Sorting algorithms are an essential chapter in undergraduate computer science education. Due to their easy to explain nature and fairly straight-forward analysis, this set of algorithms offers a convenient introduction to the methods and techniques of theoretical computer science and algorithm analysis.
+Sorting algorithms are an essential chapter of a computer science curriculum at the undergraduate level. This group of algorithms provides a quick introduction to the principles and techniques of theoretical computer science and algorithm analysis due to its simple nature and relatively straightforward examination.
 
 This React/Redux web (in TypeScript) application presents my own demo program for sortings algorithms, called "Sorting Visualizer", which visualizes the algorithms internals and their operations. See below for YouTube videos created with the demo.
 

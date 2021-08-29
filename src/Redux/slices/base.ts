@@ -1,10 +1,11 @@
 import { createSlice } from '@reduxjs/toolkit'
+import { AlgorithmType } from 'Redux/types'
 
 export const baseSlice = createSlice({
   name: 'base',
   initialState: {
     // General state
-    algorithm: '',
+    algorithm: '' as AlgorithmType,
     isRunning: false,
     array: [] as Array<number>,
     sortedArray: [] as Array<number>,
@@ -19,7 +20,7 @@ export const baseSlice = createSlice({
   },
   reducers: {
     // General reducers
-    setAlgorithm: (state, action: { payload: string }) => {
+    setAlgorithm: (state, action: { payload: AlgorithmType }) => {
       state.algorithm = action.payload
     },
 

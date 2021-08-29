@@ -1,12 +1,14 @@
-import { setArray } from '../reducers/array'
-import { setCurrentHeapThree } from '../reducers/heapSort'
-import { setCurrentSwappers } from '../reducers/swappers'
-import { setCurrentSorted } from '../reducers/sorted'
-import { setRunning } from '../reducers/running'
+import { actions } from 'Redux/slices/base'
+import { AppDispatch } from 'Redux/store'
+import { TwoDArrayOfNumbersOrBooleans } from '.'
 
-function heapSort(stateArray, dispatch, speed: number) {
+function heapSort(
+  stateArray: Array<number>,
+  dispatch: AppDispatch,
+  speed: number,
+) {
   let array = stateArray.slice(0),
-    toDispatch = []
+    toDispatch: TwoDArrayOfNumbersOrBooleans = []
   buildMaxHeap(array, toDispatch)
   let end = array.length - 1
   while (end > 0) {
@@ -26,7 +28,10 @@ function heapSort(stateArray, dispatch, speed: number) {
   return array
 }
 
-function buildMaxHeap(array: Array<number>, toDispatch) {
+function buildMaxHeap(
+  array: Array<number>,
+  toDispatch: TwoDArrayOfNumbersOrBooleans,
+) {
   let currentIndex = Math.floor(array.length / 2)
   while (currentIndex >= 0) {
     siftDown(array, currentIndex, array.length, toDispatch)
@@ -38,7 +43,7 @@ function siftDown(
   array: Array<number>,
   start: number,
   end: number,
-  toDispatch,
+  toDispatch: Array<Array<number | boolean>>,
 ) {
   if (start >= Math.floor(end / 2)) {
     return
@@ -64,25 +69,30 @@ function siftDown(
   }
 }
 
-function handleDispatch(toDispatch, dispatch, array, speed) {
+function handleDispatch(
+  toDispatch: Array<Array<number | boolean>>,
+  dispatch: AppDispatch,
+  array: Array<number>,
+  speed: number,
+) {
   if (!toDispatch.length) {
-    dispatch(setCurrentHeapThree(array.map((num, index) => index)))
+    dispatch(actions.setHeapSortArray(array.map((num, index) => index)))
     setTimeout(() => {
-      dispatch(setCurrentHeapThree([]))
-      dispatch(setRunning(false))
+      dispatch(actions.setHeapSortArray([]))
+      dispatch(actions.setRunning(false))
     }, 900)
     return
   }
   let dispatchFunction =
     toDispatch[0].length > 3
-      ? setArray
+      ? actions.setArray
       : (toDispatch[0].length === 3 && typeof toDispatch[0][2] === 'boolean') ||
         !toDispatch[0].length
-      ? setCurrentSwappers
+      ? actions.setSwappersArray
       : toDispatch[0].length === 2 && typeof toDispatch[0][0] === 'boolean'
-      ? setCurrentSorted
-      : setCurrentHeapThree
-  dispatch(dispatchFunction(toDispatch.shift()))
+      ? actions.setSortedArray
+      : actions.setHeapSortArray
+  dispatch(dispatchFunction(toDispatch.shift() as any))
   setTimeout(() => {
     handleDispatch(toDispatch, dispatch, array, speed)
   }, speed)

@@ -1,10 +1,12 @@
-import { setArray } from '../reducers/array'
-import { setCurrentBubbleTwo } from '../reducers/bubbleSort'
-import { setCurrentSwappers } from '../reducers/swappers'
-import { setCurrentSorted } from '../reducers/sorted'
-import { setRunning } from '../reducers/running'
+import { actions } from 'Redux/slices/base'
+import { AppDispatch } from 'Redux/store'
+import { TwoDArrayOfNumbersOrBooleans } from './index'
 
-function bubbleSort(stateArray, dispatch, speed: number) {
+function bubbleSort(
+  stateArray: Array<number>,
+  dispatch: AppDispatch,
+  speed: number,
+) {
   let array = stateArray.slice(0),
     toDispatch = [],
     sorted = false,
@@ -31,29 +33,29 @@ function bubbleSort(stateArray, dispatch, speed: number) {
 }
 
 function handleDispatch(
-  toDispatch,
-  dispatch,
+  toDispatch: TwoDArrayOfNumbersOrBooleans,
+  dispatch: AppDispatch,
   array: Array<number>,
   speed: number,
 ) {
   if (!toDispatch.length) {
-    dispatch(setCurrentBubbleTwo(array.map((num, index) => index)))
+    dispatch(actions.setBubbleSortArray(array.map((num, index) => index)))
     setTimeout(() => {
-      dispatch(setCurrentBubbleTwo([]))
-      dispatch(setCurrentSorted(array.map((num, index) => index)))
-      dispatch(setRunning(false))
+      dispatch(actions.setBubbleSortArray([]))
+      dispatch(actions.setSortedArray(array.map((num, index) => index)))
+      dispatch(actions.setRunning(false))
     }, 900)
     return
   }
   let dispatchFunction =
     toDispatch[0].length > 3
-      ? setArray
+      ? actions.setArray
       : toDispatch[0].length === 3 || toDispatch[0].length === 0
-      ? setCurrentSwappers
+      ? actions.setSwappersArray
       : toDispatch[0].length === 2 && typeof toDispatch[0][0] === 'boolean'
-      ? setCurrentSorted
-      : setCurrentBubbleTwo
-  dispatch(dispatchFunction(toDispatch.shift()))
+      ? actions.setSortedArray
+      : actions.setBubbleSortArray
+  dispatch(dispatchFunction(toDispatch.shift() as any))
   setTimeout(() => {
     handleDispatch(toDispatch, dispatch, array, speed)
   }, speed)
