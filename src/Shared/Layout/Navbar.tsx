@@ -117,14 +117,18 @@ const Navbar: React.FC<PropsType> = () => {
         )
       })}
       <DividerView />
-      {algorithm ? (
-        <div
-          style={{ color: color }}
-          onClick={!isRunning ? () => sort(algorithm, array, speed) : () => {}}
-        >
-          Sort!
-        </div>
-      ) : null}
+      <Button
+        color={algorithm.length > 0 ? color : 'gray'}
+        onClick={
+          algorithm
+            ? !isRunning
+              ? () => sort(algorithm, array, speed)
+              : () => {}
+            : () => {}
+        }
+      >
+        Sort!
+      </Button>
     </WrapperView>
   )
 }
@@ -146,19 +150,37 @@ const AlgorithmButton = (props: {
   }
 
   return (
-    <Button selected={isSelected} onClick={onClick}>
+    <Button color={isSelected ? 'blue' : 'red'} onClick={onClick}>
       {props.algorithm}
     </Button>
   )
 }
 
 // Styles
-
-const WrapperView = styled.div``
-const DividerView = styled.div``
+const WrapperView = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-around;
+  background: black;
+`
+const DividerView = styled.div`
+  width: 2px;
+  height: 55px;
+  background-color: gray;
+  margin-left: 15px;
+  margin-right: 15px;
+  display: inline-block;
+`
 
 const Button = styled.div`
-  color: ${(props: { selected: boolean }) => (props.selected ? 'blue' : 'red')};
+  color: ${(props: { color: string }) => props.color};
+  font-size: 16px;
+  font-family: monospace;
+  display: inline-block;
+  margin-left: 25px;
+  margin-right: 15px;
+  cursor: pointer;
 `
 
 export default React.memo(Navbar, memoComparison)
