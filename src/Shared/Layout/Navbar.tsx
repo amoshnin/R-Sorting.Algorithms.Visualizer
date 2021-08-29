@@ -2,7 +2,6 @@
 import React from 'react'
 
 // COMPONENTS IMPORTS //
-import Navbar from 'Shared/Layout/Navbar'
 import { memoComparison } from 'Shared/Helpers/Functions'
 
 // EXTRA IMPORTS //
@@ -11,12 +10,8 @@ import { memoComparison } from 'Shared/Helpers/Functions'
 
 type PropsType = {}
 
-const App: React.FC<PropsType> = () => {
-  return (
-    <>
-      <Navbar />
-    </>
-  )
+const Navbar: React.FC<PropsType> = () => {
+  return <div>Navbar</div>
 }
 
-export default React.memo(App, memoComparison)
+export default React.memo(Navbar, memoComparison)
