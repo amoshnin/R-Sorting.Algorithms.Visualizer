@@ -52,7 +52,6 @@ export const baseSlice = createSlice({
       }
 
       console.log(action.payload)
-
       var osc = context.createOscillator() // instantiate an oscillator
       osc.type = 'square' // this is the default - also square, sawtooth, triangle
       const value = limitNumberWithinRange(
