@@ -15,4 +15,5 @@ The sound effects produced are determined on the values being compared. Only com
 ## Source of inspiration
 
 Main inspiration was from the amazing [animated sorting algorithms](https://www.toptal.com/developers/sorting-algorithms) by David R. Martin
+YouTube video on QuickSort visualization = (https://www.youtube.com/watch?v=eqo2LxRADhU)
 https://panthema.net/2013/sound-of-sorting/
