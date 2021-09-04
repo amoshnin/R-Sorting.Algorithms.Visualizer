@@ -6,11 +6,11 @@ This React/Redux web (in TypeScript) application presents my own demo program fo
 
 ## Usage
 
-The Sound of Sorting demo program is very intuitive to use. It contains many sorting algorithms, which are selectable via the list box on the right. For the quick sort variants the pivot rule can be selected separately.
+- The Sound of Sorting demo program is very intuitive to use. It contains many sorting algorithms, which are selectable via the list box on the right. For the quick sort variants the pivot rule can be selected separately.
 
-The number of value comparisons and array accesses is tracked and shown in real time. The ternary comparisons are included in the comparison counter as a single operation. The array access counter is largely dependent on the actual algorithm implementation due to the fact that algorithms frequently need extra memory or local variables.
+- The number of value comparisons and array accesses is tracked and shown in real time. The ternary comparisons are included in the comparison counter as a single operation. The array access counter is largely dependent on the actual algorithm implementation due to the fact that algorithms frequently need extra memory or local variables.
 
-The sound effects produced are determined on the values being compared. Only comparisons (except in radix/bucket sort) produce audible output! The "Sound Sustain" slider may be used to adjust the length of each comparison's sound effect. The sound's frequency is determined using the comparing data. The sound wave is triangular, with an ADSR envelope modulating it. This gives the impression of a "8-bit gaming music." The frequency range 120 Hz - 1,212 Hz is scaled (with double accuracy) to an item value, which is substantial but not too high to be annoying.
+- The sound effects produced are determined on the values being compared. Only comparisons (except in radix/bucket sort) produce audible output! The "Sound Sustain" slider may be used to adjust the length of each comparison's sound effect. The sound's frequency is determined using the comparing data. The sound wave is triangular, with an ADSR envelope modulating it. This gives the impression of a "8-bit gaming music." The frequency range 120 Hz - 1,212 Hz is scaled (with double accuracy) to an item value, which is substantial but not too high to be annoying.
 
 ## Source of inspiration
 
